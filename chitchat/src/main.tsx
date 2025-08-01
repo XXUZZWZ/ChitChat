@@ -35,6 +35,14 @@ const themeVars = {
   // 移除激活时的背景色变化
   tabbarItemActiveBackgroundColor: 'transparent',
   tabbarItemInactiveBackgroundColor: 'transparent',
+  // Search 组件
+  searchBackgroundColor: '#2c2c2e',
+  searchPlaceholderColor: '#ffffff',
+  searchTextColor: '#ffffff',
+  searchContentBackgroundColor: '#2c2c2e',
+  // input组件
+  inputTextColor: '#ffffff',
+  
 
   // 主色调 (Dark 主题)
   primaryColor: '#4fc3f7',
@@ -43,9 +51,9 @@ const themeVars = {
   dangerColor: '#ff453a',
 
   // 文本颜色 (Dark 主题)
-  textColor: '#ffffff',
-  textColor2: '#ebebf5',
-  textColor3: '#8e8e93',
+  // textColor: '#ffffff',
+  // textColor2: '#ebebf5',
+  // textColor3: '#8e8e93',
 
   // 背景色 (Dark 主题)
   backgroundColor: '#000000',
@@ -55,9 +63,9 @@ const themeVars = {
   borderColor: '#3a3a3c',
 
   // 字体大小
-  fontSizeSm: '12px',
-  fontSizeMd: '14px',
-  fontSizeLg: '16px',
+  // fontSizeSm: '12px',
+  // fontSizeMd: '14px',
+  // fontSizeLg: '16px',
 }
 
 createRoot(document.getElementById('root')!).render(

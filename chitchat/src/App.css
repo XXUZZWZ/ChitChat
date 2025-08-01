@@ -37,3 +37,25 @@
 .bg-inherit {
   background-color: inherit;
 }
+// 固定在最顶部
+.fixed-top {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 999999;
+}
+
+/* 搜索组件图标样式 */
+.rv-search .rv-cell__left-icon {
+  color: #ffffff !important;
+}
+
+.rv-search .rv-cell__left-icon svg {
+  fill: #ffffff !important;
+}
+
+.rv-search .rv-icon {
+  color: #ffffff !important;
+  fill: #ffffff !important;
+}

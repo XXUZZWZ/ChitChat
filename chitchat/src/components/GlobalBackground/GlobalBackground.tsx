@@ -110,4 +110,4 @@ const GlobalBackground: React.FC<GlobalBackgroundProps> = ({
   )
 }
 
-export default GlobalBackground
+export default React.memo(GlobalBackground)

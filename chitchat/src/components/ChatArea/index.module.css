@@ -1,0 +1,144 @@
+.chatArea {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: transparent;
+  position: relative;
+  overflow: hidden;
+}
+
+.messagesContainer {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  padding-bottom: 120px;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.message {
+  display: flex;
+  margin-bottom: 16px;
+  animation: fadeInUp 0.3s ease-out;
+}
+
+.user {
+  flex-direction: row-reverse;
+  justify-content: flex-start;
+
+  .messageContent {
+    background: #4fc3f7;
+    color: white;
+    margin-right: 12px;
+    border-radius: 18px 18px 4px 18px;
+  }
+}
+
+.assistant {
+  flex-direction: row;
+  justify-content: flex-start;
+
+  .messageContent {
+    background: #2c2c2e;
+    color: white;
+    margin-left: 12px;
+    border-radius: 18px 18px 18px 4px;
+    border: 1px solid #3a3a3c;
+  }
+}
+
+.avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: #4fc3f7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 20px;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.messageContent {
+  max-width: 70%;
+  padding: 24px 30px;
+  font-size: 28px;
+  line-height: 1.6;
+  word-wrap: break-word;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.inputContainer {
+  position: fixed;
+  bottom: 80px;
+  left: 0;
+  right: 0;
+  padding: 24px 30px 30px;
+  background: rgba(28, 28, 30, 0.95);
+  backdrop-filter: blur(20px);
+  border-top: 1px solid #3a3a3c;
+
+  form {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background: rgba(60, 60, 67, 0.8);
+    border-radius: 35px;
+    padding: 18px 30px;
+    border: 1px solid #4fc3f7;
+  }
+}
+
+.input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #ffffff !important;
+  font-size: 28px;
+  padding: 12px 0;
+  font-weight: 700;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+
+  &::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+    font-weight: 400;
+  }
+}
+
+.sendButton {
+  background: #4fc3f7;
+  border: none;
+  border-radius: 25px;
+  padding: 15px 25px;
+  color: white;
+  font-size: 24px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: #3ba3d4;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(79, 195, 247, 0.4);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

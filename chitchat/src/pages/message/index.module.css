@@ -1,0 +1,24 @@
+.messageContainer {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #f8f8f8;
+}
+
+.navbar {
+  background: white;
+  border-bottom: 1px solid #e5e5ea;
+  z-index: 100;
+}
+
+.chatContainer {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  padding-bottom: 80px; /* 为输入框留出空间 */
+}
+
+/* 确保聊天区域占满剩余空间 */
+.chatContainer > div:first-child {
+  height: 100%;
+}
