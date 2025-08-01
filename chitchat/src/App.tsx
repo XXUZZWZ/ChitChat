@@ -2,11 +2,11 @@
 import './App.css'
 
 function App() {
-  
+
 
   return (
     <>
-      <div style={{height:"100px",width:"100px",backgroundColor:"red"}}>
+      <div className="test-box">
         你好
       </div>
     </>

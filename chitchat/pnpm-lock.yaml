@@ -14,12 +14,6 @@ importers:
       lib-flexible:
         specifier: 0.3.2
         version: 0.3.2
-      postcss:
-        specifier: ^8.5.6
-        version: 8.5.6
-      postcss-pxtorem:
-        specifier: ^6.1.0
-        version: 6.1.0(postcss@8.5.6)
       react:
         specifier: ^19.1.0
         version: 19.1.1
@@ -63,6 +57,12 @@ importers:
       jwt-decode:
         specifier: ^4.0.0
         version: 4.0.0
+      postcss:
+        specifier: ^8.5.6
+        version: 8.5.6
+      postcss-pxtorem:
+        specifier: ^6.1.0
+        version: 6.1.0(postcss@8.5.6)
       typescript:
         specifier: ~5.8.3
         version: 5.8.3
