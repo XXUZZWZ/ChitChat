@@ -20,7 +20,9 @@ import {
   UserO,
   WapHome,
   Star,
-  Contact
+  Contact,
+  ChatO,
+  Chat
 }from '@react-vant/icons'
 
 
@@ -28,7 +30,7 @@ import {
 const MainLayout = ()=>{
   const tabs = [
     {icon:<HomeO/>,title:'首页',path:'/home'},
-    {icon:<StarO/>,title:'收藏',path:'/message'},
+    {icon:<ChatO/>,title:'消息',path:'/message'},
     {icon:<Plus/>,title:'发布',path:'/publish'},
     {icon:<Search/>,title:'探索',path:'/explore'},
     {icon:<UserO/>,title:'我的',path:'/account'},
@@ -68,7 +70,7 @@ const MainLayout = ()=>{
           // 激活状态使用填充图标
           switch(index) {
             case 0: displayIcon = <WapHome/>; break;  // 首页
-            case 1: displayIcon = <Star/>; break;     // 收藏
+            case 1: displayIcon = <Chat/>; break;     // 收藏
             case 2: displayIcon = <Plus/>; break;     // 发布
             case 3: displayIcon = <Search/>; break;   // 探索
             case 4: displayIcon = <Contact/>; break;     // 我的账号

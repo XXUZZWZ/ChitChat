@@ -4,8 +4,7 @@ import { ConfigProvider } from 'react-vant'
 import './index.css'
 import 'lib-flexible'
 import App from './App.tsx'
-import GlobalBackground from './components/GlobalBackground.tsx'
-import BackgroundController from './components/BackgroundController.tsx'
+import GlobalBackground from './components/GlobalBackground/GlobalBackground.tsx'
 
 const themeVars = {
   // Dark 主题配置

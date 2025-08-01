@@ -10,7 +10,8 @@ import {
 import './App.css'
 import MainLayout from './layout/MainLayout'
 import PureLayout from './layout/PureLayout'
-import GlobalBackground from './components/GlobalBackground'
+import Loading from './components/Loading'
+import GlobalBackground from './components/GlobalBackground/GlobalBackground'
 import { useGlobalBackground } from './hooks/useGlobalBackground'
 
 const Home = lazy(() => import('./pages/home'))
@@ -27,7 +28,7 @@ function App() {
 
   return (
     <GlobalBackground {...backgroundConfig}>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<Loading />}>
         <Routes>
           <Route element={<MainLayout />}>
             <Route path="/" element={<Navigate to="/home" replace />} />
