@@ -29,3 +29,11 @@
 .ml4 {
   margin-left: 4px;
 }
+// 背景色透明
+.bg-transparent {
+  background-color: transparent;
+}
+// 背景色继承
+.bg-inherit {
+  background-color: inherit;
+}
