@@ -1,5 +1,5 @@
 interface ChatMessage {
-  role: 'user' | 'assistant'
+  role: 'user' | 'assistant'|'system'
   content: string
 }
 
@@ -19,7 +19,8 @@ export const chat = async (
   messages: ChatMessage[],
   api_url: string = DEEPSEEK_CHAT_API_URL,
   api_key: string = import.meta.env.VITE_DEEPSEEK_API_KEY,
-  model: string = "deepseek-chat"
+  model: string = "deepseek-chat",
+  system_prompt: string="你负责扮演任何可能的角色，请尽量使用中文回答。"
 ): Promise<ChatResponse> => {
   try {
     const response = await fetch(api_url, {
@@ -30,8 +31,10 @@ export const chat = async (
       },
       body: JSON.stringify({
         model,
+        system_prompt,
         messages,
         stream: false,
+
       }),
     })
     const data = await response.json()
@@ -59,6 +62,17 @@ export const kimiChat = async (messages: ChatMessage[]): Promise<ChatResponse> =
     "kimi-k2-0711-preview"
   )
   return res
+}
+export const chatWithRole = async(messages: ChatMessage[], role: string)=>{
+  const res = await chat(
+    [{ role:'system',
+      content:role},...messages],
+    DEEPSEEK_CHAT_API_URL,
+    import.meta.env.VITE_DEEPSEEK_API_KEY,
+    "deepseek-chat",
+    role
+  )
+  return res;
 }
 
 // TODO: Implement avatar generation

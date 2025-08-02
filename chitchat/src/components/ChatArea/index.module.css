@@ -1,13 +1,16 @@
 .chatArea {
+  margin-top: 21px;
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 85vh;
   background: transparent;
   position: relative;
   overflow: hidden;
+  margin-bottom: 85px;
 }
 
 .messagesContainer {
+  margin-top: 50px;
   flex: 1;
   padding: 20px;
   overflow-y: auto;
