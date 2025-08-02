@@ -7,7 +7,21 @@ const getImages = (page, pageSize = 10) => {
     url: Mock.Random.image("300x400", Mock.Random.color(), "#fff", "image"),
   }));
 };
+const getAiRole = (page, pageSize = 10) => {
+  return Array.from({ length: pageSize }, (_, i) => ({
+    id: `${page}-${i}`,
+    prompt: Mock.Random.csentence(20,30),
+    placeholder: Mock.Random.csentence(5,10),
+    imageUrl: Mock.Random.image(
+      "412x915",
+      Mock.Random.color(),
+      "#fff",
+      "image"
+    ),
+  }));
+};
 export default [
+  // 搜索页推荐接口
   {
     url: "/api/search",
     method: "get",
@@ -24,13 +38,14 @@ export default [
         console.log(randomData);
         list.push(`${randomData.title} ${keyword}`);
       }
-      // ? keyword = 是笑容 前端传递方式
+      // ? keyword = 是query 前端传递方式
       return {
         code: 0,
         data: list,
       };
     },
   },
+  // 搜索热词接口
   {
     url: "/api/hotlist",
     method: "get",
@@ -58,6 +73,7 @@ export default [
       };
     },
   },
+  // 详情页接口
   {
     url: "/api/detail/:id",
     method: "get",
@@ -107,6 +123,7 @@ export default [
       };
     },
   },
+  // 图片含多页分页接口
   {
     // ?page=1 url 里的queryString
     url: "/api/images",
@@ -116,6 +133,18 @@ export default [
       return {
         code: 0,
         data: getImages(page),
+      };
+    },
+  },
+  // 获取ai扮演的角色prompt 和 placeholder和背景图片imgUrl
+  // 一页10条
+  {
+    url: "/api/ai-role",
+    method: "get",
+    response: ({ query }) => {
+      return {
+        code: 0,
+        data: getAiRole(query.page),
       };
     },
   },

@@ -20,7 +20,6 @@ export const chat = async (
   api_url: string = DEEPSEEK_CHAT_API_URL,
   api_key: string = import.meta.env.VITE_DEEPSEEK_API_KEY,
   model: string = "deepseek-chat",
-  system_prompt: string="你负责扮演任何可能的角色，请尽量使用中文回答。"
 ): Promise<ChatResponse> => {
   try {
     const response = await fetch(api_url, {
@@ -31,7 +30,6 @@ export const chat = async (
       },
       body: JSON.stringify({
         model,
-        system_prompt,
         messages,
         stream: false,
 

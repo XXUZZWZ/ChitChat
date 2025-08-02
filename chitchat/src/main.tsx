@@ -72,18 +72,9 @@ createRoot(document.getElementById('root')!).render(
   <Router>
    
     <ConfigProvider themeVars={themeVars}>
-    <GlobalBackground
-      type="image"
-      imageConfig={{
-        url:"https://img.3dmgame.com/uploads/images/news/20220913/1663040832_649686.jpg",
-        size: 'cover',
-        position: 'center',
-        repeat: 'no-repeat',
-        opacity: 0.8
-      }}
-    >
+   
        <App />
-    </GlobalBackground>
+   
     </ConfigProvider>
   </Router>
 )

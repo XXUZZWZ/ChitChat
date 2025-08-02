@@ -47,5 +47,11 @@ function App() {
     </GlobalBackground>
   )
 }
+import { getAiRole } from './api/getAiRole'
+(async () => {
+ const data =   await getAiRole('1')
+ console.log(data)
+
+})()
 
 export default App

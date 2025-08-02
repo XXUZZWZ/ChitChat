@@ -1,9 +1,9 @@
 import styles from './index.module.css'
-import useChatAreaStore from '../../store/useChatAreaStore'
 import { useState } from 'react';
 import { Button, Input } from 'react-vant';
 import { chat } from '../../llm';
 import MarkdownRenderer from '../MarkdownRenderer';
+import{memo} from 'react';
 
 
 const ChatArea = ({prompt,placeholder}) => {
@@ -72,4 +72,4 @@ const ChatArea = ({prompt,placeholder}) => {
   )
 }
 
-export default ChatArea
+export default memo(ChatArea)
