@@ -4,9 +4,8 @@ import { ConfigProvider } from 'react-vant'
 import './index.css'
 import 'lib-flexible'
 import App from './App.tsx'
-import GlobalBackground from './components/GlobalBackground/GlobalBackground.tsx'
 
-const themeVars = {
+const themeVarsDark = {
   // Dark 主题配置
 
   // Rate 组件
@@ -67,11 +66,64 @@ const themeVars = {
   // fontSizeMd: '14px',
   // fontSizeLg: '16px',
 }
+const themeVars = {
+  // Light 明亮主题配置
+
+  // Rate 组件
+  rateIconFullColor: '#ff6b35',
+
+  // Slider 组件
+  sliderBarHeight: '4px',
+  sliderButtonWidth: '20px',
+  sliderButtonHeight: '20px',
+  sliderActiveBackgroundColor: '#ff6b35',
+
+  // Button 组件
+  buttonPrimaryBorderColor: '#ff6b35',
+  buttonPrimaryBackgroundColor: '#ff6b35',
+  buttonDefaultColor: '#333333',
+  buttonDefaultBorderColor: '#e0e0e0',
+  buttonDefaultBackgroundColor: '#ffffff',
+
+  // Tabbar 组件 (Light 主题)
+  tabbarBackgroundColor: 'rgba(255, 255, 255, 0.95)',
+  tabbarItemActiveColor: '#ff6b35',
+  tabbarItemInactiveColor: '#666666',
+  tabbarActiveColor: '#ff6b35',
+  tabbarInactiveColor: '#666666',
+  tabbarTextColor: '#666666',
+  // 移除激活时的背景色变化
+  tabbarItemActiveBackgroundColor: 'transparent',
+  tabbarItemInactiveBackgroundColor: 'transparent',
+  
+  // Search 组件
+  searchBackgroundColor: '#f8f9fa',
+  searchPlaceholderColor: '#999999',
+  searchTextColor: '#333333',
+  searchContentBackgroundColor: '#f3f3f3',
+  
+  // input组件
+  inputTextColor: '#ffffff',
+  
+
+  // 主色调 (Light 主题)
+  primaryColor: '#ff6b35',
+  successColor: '#28a745',
+  warningColor: '#ffc107',
+  dangerColor: '#dc3545',
+
+  // 背景色 (Light 主题)
+  backgroundColor: '#333',
+  backgroundColor2: '#f8f9fa',
+
+  // 边框色 (Light 主题)
+  borderColor: '#e0e0e0',
+}
 
 createRoot(document.getElementById('root')!).render(
   <Router>
    
-    <ConfigProvider themeVars={themeVars}>
+    <ConfigProvider themeVars={themeVarsDark}>
    
        <App />
    

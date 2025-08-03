@@ -11,8 +11,6 @@ import './App.css'
 import MainLayout from './layout/MainLayout'
 import PureLayout from './layout/PureLayout'
 import Loading from './components/Loading'
-import GlobalBackground from './components/GlobalBackground/GlobalBackground'
-import { useGlobalBackground } from './hooks/useGlobalBackground'
 
 const Home = lazy(() => import('./pages/home'))
 const Login = lazy(() => import('./pages/login'))
@@ -23,11 +21,11 @@ const Message = lazy(() => import('./pages/message'))
 const Search = lazy(() => import('./pages/search'))
 
 function App() {
-  // 使用全局背景 Hook
-  const { backgroundConfig } = useGlobalBackground()
+  
+  
 
   return (
-    <GlobalBackground {...backgroundConfig}>
+   
       <Suspense fallback={<Loading />}>
         <Routes>
           <Route element={<MainLayout />}>
@@ -44,7 +42,7 @@ function App() {
           </Route>
         </Routes>
       </Suspense>
-    </GlobalBackground>
+    
   )
 }
 import { getAiRole } from './api/getAiRole'

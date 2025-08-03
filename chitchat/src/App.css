@@ -43,7 +43,8 @@
   top: 0;
   left: 0;
   width: 100%;
-  z-index: 999999;
+  height: 50px;
+  z-index: 10000000;
 }
 
 /* 搜索组件图标样式 */
