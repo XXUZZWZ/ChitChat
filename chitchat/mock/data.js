@@ -10,8 +10,8 @@ const getImages = (page, pageSize = 10) => {
 const getAiRole = (page, pageSize = 10) => {
   return Array.from({ length: pageSize }, (_, i) => ({
     id: `${page}-${i}`,
-    prompt: Mock.Random.csentence(20,30),
-    placeholder: Mock.Random.csentence(5,10),
+    prompt: Mock.Random.csentence(20, 30),
+    placeholder: Mock.Random.csentence(5, 10),
     imageUrl: Mock.Random.image(
       "412x915",
       Mock.Random.color(),
@@ -55,19 +55,19 @@ export default [
         data: [
           {
             id: "101",
-            city: "北京",
+            role: "猫娘",
           },
           {
             id: "102",
-            city: "上海",
+            role: "精灵",
           },
           {
             id: "103",
-            city: "抚州",
+            role: "机器瓦力",
           },
           {
             id: "104",
-            city: "广州",
+            role: "外星人",
           },
         ],
       };
