@@ -169,3 +169,31 @@
 .field :global(.rv-field__clear:hover) {
   color: #ffffff;
 }
+
+.backBtn {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: rgba(44, 44, 46, 0.8);
+  border: 1px solid rgba(58, 58, 60, 0.5);
+  border-radius: 12px;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  z-index: 10;
+}
+
+.backBtn:hover {
+  background: rgba(44, 44, 46, 0.95);
+  transform: translateY(-1px);
+}
+
+.backBtn:active {
+  transform: translateY(0);
+}
