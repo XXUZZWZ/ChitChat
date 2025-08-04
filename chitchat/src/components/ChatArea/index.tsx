@@ -1,24 +1,34 @@
 import styles from './index.module.css'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button, Input } from 'react-vant';
 import { chat } from '../../llm';
 import MarkdownRenderer from '../MarkdownRenderer';
-import{memo} from 'react';
+import { memo } from 'react';
+import LocalStorageUtil from '../../utils/LocalStorageUtil';
 
+const ChatArea = ({prompt, placeholder}) => {
+  const storageKey = `chat_messages_${prompt?.slice(0, 20) || 'default'}`;
+  
+  const [inputValue, setInputValue] = useState('');
+  const [messagesList, setMessagesList] = useState<any>(() => {
+    const saved = LocalStorageUtil.getItem<any[]>(storageKey);
+    return saved || [{role:'system', content: prompt}];
+  });
+  const [loading, setLoading] = useState(false);
 
-const ChatArea = ({prompt,placeholder}) => {
-  // const { messagesList,loading, addMessage } = useChatAreaStore();
-  const [inputValue, setInputValue]  = useState('');
-  const [messagesList,setMessagesList] = useState<any>([{role:'system',content:prompt}]);
-  const [loading,setLoading] = useState(false);
-  const addMessage = (message : string, role: 'user' | 'assistant'|'system') => {
-     setLoading(true);
-     chat([...messagesList,{role,content:message}]).then(res => { 
-       if(res.data) {
-         setMessagesList([...messagesList,{role,content:message},{role:res.data.role,content:res.data.content}]);
-         setLoading(false);
-       }
-     }) 
+  // 保存消息到本地存储
+  useEffect(() => {
+    LocalStorageUtil.setItem(storageKey, messagesList);
+  }, [messagesList, storageKey]);
+
+  const addMessage = (message: string, role: 'user' | 'assistant' | 'system') => {
+    setLoading(true);
+    chat([...messagesList, {role, content: message}]).then(res => { 
+      if(res.data) {
+        setMessagesList([...messagesList, {role, content: message}, {role: res.data.role, content: res.data.content}]);
+        setLoading(false);
+      }
+    }) 
   }
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>)=>{
     e.preventDefault();
