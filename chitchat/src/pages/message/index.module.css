@@ -2,23 +2,244 @@
   height: 100vh;
   display: flex;
   flex-direction: column;
-  background: #f8f8f8;
+  background: #1c1c1e;
 }
 
-.navbar {
-  background: white;
-  border-bottom: 1px solid #e5e5ea;
+.header {
+  background: #2c2c2e;
+  padding: 20px 30px;
+  border-bottom: 1px solid #3a3a3c;
+  position: sticky;
+  top: 0;
   z-index: 100;
+}
+
+.headerTitle {
+  font-size: 34px;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0;
+  text-align: center;
 }
 
 .chatContainer {
   flex: 1;
-  position: relative;
-  overflow: hidden;
-  padding-bottom: 80px; /* 为输入框留出空间 */
+  overflow-y: auto;
+  background: #1c1c1e;
 }
 
-/* 确保聊天区域占满剩余空间 */
-.chatContainer > div:first-child {
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 400px;
+  color: #8e8e93;
+  font-size: 28px;
+}
+
+.emptyIcon {
+  font-size: 120px;
+  margin-bottom: 20px;
+  opacity: 0.3;
+}
+
+.chatList {
+  background: #1c1c1e;
+}
+
+.chatItem {
+  display: flex;
+  align-items: center;
+  padding: 20px 30px;
+  border-bottom: 1px solid #2c2c2e;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  position: relative;
+  background: #1c1c1e;
+}
+
+.chatItem:hover {
+  background: #2c2c2e;
+}
+
+.chatItem:active {
+  background: #3a3a3c;
+}
+
+.chatItem:last-child {
+  border-bottom: none;
+}
+
+.avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-right: 24px;
+  flex-shrink: 0;
+  background: #3a3a3c;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar img {
+  width: 100%;
   height: 100%;
+  object-fit: cover;
+}
+
+.avatarPlaceholder {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, #4fc3f7, #29b6f6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 32px;
+  font-weight: bold;
+}
+
+.chatInfo {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.chatHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.chatTitle {
+  font-size: 32px;
+  font-weight: 500;
+  color: #ffffff;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 300px;
+}
+
+.messageTime {
+  font-size: 24px;
+  color: #8e8e93;
+  flex-shrink: 0;
+  margin-left: 20px;
+}
+
+.lastMessageRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.lastMessage {
+  font-size: 26px;
+  color: #8e8e93;
+  line-height: 1.4;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+  margin-right: 20px;
+}
+
+.messageCount {
+  background: #4fc3f7;
+  color: white;
+  font-size: 20px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  min-width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(79, 195, 247, 0.3);
+}
+
+.messageCount.zero {
+  display: none;
+}
+
+/* 滚动条样式 - 深色主题 */
+.chatContainer::-webkit-scrollbar {
+  width: 6px;
+}
+
+.chatContainer::-webkit-scrollbar-track {
+  background: #2c2c2e;
+}
+
+.chatContainer::-webkit-scrollbar-thumb {
+  background: #48484a;
+  border-radius: 3px;
+}
+
+.chatContainer::-webkit-scrollbar-thumb:hover {
+  background: #5a5a5c;
+}
+
+/* 响应式适配 */
+@media (max-width: 768px) {
+  .chatItem {
+    padding: 15px 20px;
+  }
+  
+  .avatar {
+    width: 80px;
+    height: 80px;
+    margin-right: 20px;
+  }
+  
+  .chatTitle {
+    font-size: 28px;
+    max-width: 200px;
+  }
+  
+  .lastMessage {
+    font-size: 24px;
+  }
+  
+  .messageTime {
+    font-size: 22px;
+  }
+}
+
+/* 添加一些微妙的动画效果 */
+.chatItem {
+  transition: all 0.2s ease;
+}
+
+.messageCount {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 2px 8px rgba(79, 195, 247, 0.3);
+  }
+  50% {
+    box-shadow: 0 2px 12px rgba(79, 195, 247, 0.5);
+  }
+  100% {
+    box-shadow: 0 2px 8px rgba(79, 195, 247, 0.3);
+  }
+}
+
+/* 空状态优化 */
+.emptyState div:last-child {
+  color: #636366;
+  font-size: 24px;
+  margin-top: 10px;
+  opacity: 0.8;
 }
