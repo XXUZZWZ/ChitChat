@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { Button, Field } from 'react-vant'
+import { ArrowLeft } from '@react-vant/icons'
 import { useUserStore } from '../../store/useUserStore'
 import useTitle from '../../hooks/useTitle'
 import styles from './index.module.css'
@@ -51,8 +52,16 @@ const Login = () => {
     }
   }
 
+  const handleGoBack = () => {
+    navigate('/home', { replace: true }) // 返回上一页
+  }
+
   return (
     <div className={styles.container}>
+      <button className={styles.backBtn} onClick={handleGoBack}>
+        <ArrowLeft size="24px" />
+      </button>
+      
       <div className={styles.wrapper}>
         <div className={styles.header}>
           <h1 className={styles.title}>欢迎回来</h1>
