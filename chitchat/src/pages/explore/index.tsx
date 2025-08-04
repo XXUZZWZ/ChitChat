@@ -1,8 +1,126 @@
+import { useEffect, useState, useRef, useCallback } from 'react'
+import { useNavigate } from 'react-router-dom'
 import useTitle from '../../hooks/useTitle'
+import useAiRoleListStore from '../../store/useAiRoleListStore'
 import styles from './index.module.css'
+import type { AiRoleItem } from '../../types'
+
 const Explore = () => {
   useTitle('探索')
-  return <div>Explore</div>
+  const navigate = useNavigate()
+  const { aiRoleList, loading, fetchMoreAiRoleList } = useAiRoleListStore()
+  const [columns, setColumns] = useState<AiRoleItem[][]>([[], []])
+  const containerRef = useRef<HTMLDivElement>(null)
+
+  // 计算瀑布流布局
+  const calculateWaterfallLayout = useCallback(() => {
+    const newColumns: AiRoleItem[][] = [[], []]
+    const columnHeights = [0, 0]
+
+    aiRoleList.forEach((item) => {
+      // 随机高度模拟不同卡片高度
+      const randomHeight = Math.floor(Math.random() * 100) + 200
+      
+      // 找到高度最小的列
+      const minHeightIndex = columnHeights[0] <= columnHeights[1] ? 0 : 1
+      
+      newColumns[minHeightIndex].push(item)
+      columnHeights[minHeightIndex] += randomHeight
+    })
+
+    setColumns(newColumns)
+  }, [aiRoleList])
+
+  useEffect(() => {
+    calculateWaterfallLayout()
+  }, [calculateWaterfallLayout])
+
+  // 滚动加载更多
+  const handleScroll = useCallback(() => {
+    if (loading) return
+    
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop
+    const windowHeight = window.innerHeight
+    const documentHeight = document.documentElement.scrollHeight
+    
+    if (scrollTop + windowHeight >= documentHeight - 100) {
+      fetchMoreAiRoleList()
+    }
+  }, [loading, fetchMoreAiRoleList])
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [handleScroll])
+
+  // 点击角色卡片
+  const handleRoleClick = (role: AiRoleItem) => {
+    navigate('/home', {
+      state: {
+        selectedRole: role
+      }
+    })
+  }
+
+  // 提取角色名称
+  const getRoleName = (prompt: string) => {
+    const roleMatch = prompt.match(/我是(.{1,8}?)(?:[，,。]|$)/) || 
+                     prompt.match(/作为(.{1,8}?)(?:[，,。]|$)/)
+    
+    if (roleMatch) {
+      return roleMatch[1]
+    }
+    
+    return prompt.slice(0, 6) + (prompt.length > 6 ? '...' : '')
+  }
+
+  return (
+    <div className={styles.container}>
+      <div className={styles.header}>
+        <h1 className={styles.title}>探索角色</h1>
+        <p className={styles.subtitle}>发现更多有趣的 AI 角色</p>
+      </div>
+      
+      <div ref={containerRef} className={styles.waterfall}>
+        {columns.map((column, columnIndex) => (
+          <div key={columnIndex} className={styles.column}>
+            {column.map((item) => (
+              <div 
+                key={item.id} 
+                className={styles.card}
+                onClick={() => handleRoleClick(item)}
+              >
+                <div className={styles.cardImage}>
+                  <img src={item.imageUrl} alt={getRoleName(item.prompt)} />
+                  <div className={styles.cardOverlay}>
+                    <div className={styles.cardTitle}>
+                      {getRoleName(item.prompt)}
+                    </div>
+                  </div>
+                </div>
+                <div className={styles.cardContent}>
+                  <p className={styles.cardDescription}>
+                    {item.prompt.slice(0, 50)}
+                    {item.prompt.length > 50 ? '...' : ''}
+                  </p>
+                  <div className={styles.cardFooter}>
+                    <span className={styles.cardTag}>AI角色</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
+      
+      {loading && (
+        <div className={styles.loading}>
+          <div className={styles.loadingSpinner}></div>
+          <span>加载更多角色中...</span>
+        </div>
+      )}
+    </div>
+  )
 }
 
 export default Explore
