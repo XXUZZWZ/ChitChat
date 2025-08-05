@@ -35,11 +35,14 @@ function App() {
             <Route path="/explore" element={<Explore />} />
             <Route path="/message" element={<Message />} />
             <Route path="/publish" element={ <RequireAuth><Publish /></RequireAuth>} />
+          
           </Route>
           <Route element={<PureLayout />} >
           <Route path="/login" element={<Login />} />
           <Route path="/search" element={<Search />} />
+         
           </Route>
+          <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </Suspense>
     
@@ -53,3 +56,4 @@ import { getAiRole } from './api/getAiRole'
 })()
 
 export default App
+
