@@ -1,13 +1,15 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { Button, Field, Toast } from 'react-vant'
 import useTitle from '../../hooks/useTitle'
 import useAiRoleListStore from '../../store/useAiRoleListStore'
+import BackgroundGenerator from '../../components/BackgroundGenerator/BackgroundGenerator'
 import styles from './index.module.css'
 
 const Publish = () => {
   useTitle('发布')
   const navigate = useNavigate()
+  const location = useLocation()
   const { aiRoleList } = useAiRoleListStore()
   
   const [formData, setFormData] = useState({
@@ -17,6 +19,16 @@ const Publish = () => {
     description: ''
   })
   const [loading, setLoading] = useState(false)
+  const [customBackground, setCustomBackground] = useState('')
+
+  // 接收从背景生成页面传回的图片URL
+  useEffect(() => {
+    if (location.state?.generatedBackground) {
+      setCustomBackground(location.state.generatedBackground)
+      // 清除state，避免重复设置
+      navigate(location.pathname, { replace: true, state: {} })
+    }
+  }, [location.state, navigate, location.pathname])
 
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({
@@ -25,7 +37,15 @@ const Publish = () => {
     }))
   }
 
+  const handleBackgroundGenerated = (imageUrl: string) => {
+    setCustomBackground(imageUrl)
+  }
+
   const generateImageUrl = (title: string) => {
+    // 如果有自定义背景，优先使用
+    if (customBackground) {
+      return customBackground
+    }
     const colors = ['ff9ed3', 'a2f5cf', 'c0c0c0', '6a5acd', 'ffa07a', '98fb98', 'dda0dd', 'f0e68c']
     const randomColor = colors[Math.floor(Math.random() * colors.length)]
     return `https://dummyimage.com/412x915/${randomColor}/fff&text=${encodeURIComponent(title)}`
@@ -53,7 +73,7 @@ const Publish = () => {
         id: `user_${Date.now()}`,
         prompt: formData.prompt,
         placeholder: formData.placeholder,
-        imageUrl: generateImageUrl(formData.title),
+        imageUrl: generateImageUrl(formData.title), // 这里会使用自定义背景
         title: formData.title,
         description: formData.description,
         createdAt: Date.now(),
@@ -151,20 +171,13 @@ const Publish = () => {
           />
         </div>
 
-        <div className={styles.preview}>
-          <h3 className={styles.previewTitle}>预览</h3>
-          <div className={styles.previewCard}>
-            <div className={styles.previewImage}>
-              <img 
-                src={formData.title ? generateImageUrl(formData.title) : 'https://dummyimage.com/412x915/ddd/999&text=预览'} 
-                alt="角色预览" 
-              />
-            </div>
-            <div className={styles.previewInfo}>
-              <h4>{formData.title || '角色名称'}</h4>
-              <p>{formData.description || '角色描述'}</p>
-            </div>
-          </div>
+        <div className={styles.formGroup}>
+          <label className={styles.label}>背景图片生成</label>
+          <BackgroundGenerator 
+            onBackgroundGenerated={handleBackgroundGenerated}
+            currentBackground={customBackground}
+            prompt={formData.prompt}
+          />
         </div>
 
         <Button

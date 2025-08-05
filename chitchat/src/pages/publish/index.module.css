@@ -37,10 +37,19 @@
 
 .label {
   display: block;
+  color: #ffffff;
   font-size: 16px;
   font-weight: 600;
-  color: #ffffff;
-  margin-bottom: 8px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+}
+
+.label::before {
+  content: '•';
+  color: #4fc3f7;
+  font-weight: bold;
+  margin-right: 8px;
 }
 
 .field {
@@ -81,21 +90,21 @@
 }
 
 .previewCard {
-  display: flex;
-  align-items: center;
-  padding: 16px;
-  background: #1c1c1e;
-  border-radius: 12px;
-  border: 2px dashed #3a3a3c;
+  background: rgba(44, 44, 46, 0.8);
+  border-radius: 16px;
+  padding: 20px;
+  border: 1px solid rgba(58, 58, 60, 0.5);
+  backdrop-filter: blur(10px);
 }
 
 .previewImage {
-  width: 60px;
-  height: 60px;
+  position: relative;
+  width: 200px;
+  height: 300px;
   border-radius: 12px;
   overflow: hidden;
-  margin-right: 16px;
-  flex-shrink: 0;
+  margin: 0 auto 16px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
 }
 
 .previewImage img {
@@ -145,3 +154,76 @@
   box-shadow: 0 2px 8px rgba(79, 195, 247, 0.4);
 }
 
+/* 在现有样式基础上添加背景相关样式 */
+
+.backgroundSection {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+  background: rgba(44, 44, 46, 0.5);
+  border-radius: 12px;
+  border: 1px solid rgba(58, 58, 60, 0.3);
+  align-items: center;
+}
+
+.backgroundPreview {
+  width: 80px;
+  height: 120px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 2px solid rgba(79, 195, 247, 0.3);
+  transition: all 0.3s ease;
+}
+
+.backgroundPreview:hover {
+  border-color: #4fc3f7;
+  transform: scale(1.05);
+}
+
+.backgroundPreview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.generateBtn {
+  background: linear-gradient(135deg, #4fc3f7 0%, #29b6f6 100%);
+  border: none;
+  border-radius: 8px;
+  color: #ffffff;
+  font-weight: 600;
+  padding: 10px 20px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  min-width: 120px;
+}
+
+.generateBtn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(79, 195, 247, 0.3);
+}
+
+.generateBtn:active {
+  transform: translateY(0);
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .backgroundSection {
+    flex-direction: column;
+    text-align: center;
+    gap: 12px;
+  }
+  
+  .backgroundPreview {
+    width: 60px;
+    height: 90px;
+  }
+  
+  .previewImage {
+    width: 160px;
+    height: 240px;
+  }
+}
