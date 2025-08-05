@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+
 import ChatHistoryUtil from '../../utils/ChatHistoryUtil';
 import styles from './index.module.css';
+import useTitle from '../../hooks/useTitle';
 
 interface ChatHistoryItem {
   id: string;
@@ -15,6 +17,7 @@ interface ChatHistoryItem {
 }
 
 const Message = () => {
+  useTitle('消息');
   const [chatHistory, setChatHistory] = useState<ChatHistoryItem[]>([]);
   const navigate = useNavigate();
 
