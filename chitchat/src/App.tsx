@@ -19,7 +19,7 @@ const Publish = lazy(() => import('./pages/publish'))
 const Explore = lazy(() => import('./pages/explore'))
 const Message = lazy(() => import('./pages/message'))
 const Search = lazy(() => import('./pages/search'))
-
+const RequireAuth = lazy(() => import('./components/RequireAuth'))
 function App() {
   
   
@@ -31,10 +31,10 @@ function App() {
           <Route element={<MainLayout />}>
             <Route path="/" element={<Navigate to="/home" replace />} />
             <Route path="/home" element={<Home />} />
-            <Route path="/account" element={<Account />} />
+            <Route path="/account" element={ <RequireAuth><Account /></RequireAuth>} />
             <Route path="/explore" element={<Explore />} />
             <Route path="/message" element={<Message />} />
-            <Route path="/publish" element={<Publish />} />
+            <Route path="/publish" element={ <RequireAuth><Publish /></RequireAuth>} />
           </Route>
           <Route element={<PureLayout />} >
           <Route path="/login" element={<Login />} />
