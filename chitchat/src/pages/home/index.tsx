@@ -17,9 +17,9 @@ const Home = () => {
   const [loadedImages, setLoadedImages] = useState(new Set());
   const swiperRef = useRef(null);
   
-  const handleSearch = () => {
-    navigate('/search')
-  }
+  // const handleSearch = () => {
+  //   navigate('/search')
+  // }
   
   const { aiRoleList, loading, fetchMoreAiRoleList } = useAiRoleListStore();
   
@@ -102,7 +102,7 @@ const Home = () => {
     >
      
       
-      <Search placeholder="请输入内容" onClickInput={handleSearch} className={styles.search} />
+      {/* <Search placeholder="搜索你喜欢的角色" onClickInput={handleSearch} className={styles.search} /> */}
       
       <Swiper 
         ref={swiperRef}
@@ -118,7 +118,11 @@ const Home = () => {
           return (
             <Swiper.Item key={item.id}>
               <div>&nbsp;</div>
-              <ChatArea prompt={item.prompt} placeholder={item.placeholder}/>
+              <ChatArea 
+                prompt={item.prompt} 
+                placeholder={item.placeholder}
+                backgroundImage={item.imageUrl}
+              />
             </Swiper.Item>
           )
         })} 
