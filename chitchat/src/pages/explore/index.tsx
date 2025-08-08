@@ -4,6 +4,7 @@ import useTitle from '../../hooks/useTitle'
 import useAiRoleListStore from '../../store/useAiRoleListStore'
 import styles from './index.module.css'
 import type { AiRoleItem } from '../../types'
+import { Search } from 'react-vant'
 
 const Explore = () => {
   useTitle('探索')
@@ -73,9 +74,13 @@ const Explore = () => {
     
     return prompt.slice(0, 6) + (prompt.length > 6 ? '...' : '')
   }
-
+  const handleSearch = () => {
+    navigate('/search')
+  }
   return (
     <div className={styles.container}>
+      <Search placeholder="搜索你喜欢的角色" onClickInput={handleSearch} className={styles.search} /> 
+
       <div className={styles.header}>
         <h1 className={styles.title}>探索角色</h1>
         <p className={styles.subtitle}>发现更多有趣的 AI 角色</p>

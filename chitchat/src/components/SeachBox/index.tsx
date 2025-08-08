@@ -35,7 +35,7 @@ const SearchBox = (props) => {
   return (
     <div className={styles.wrapper}>
     <ArrowLeft 
-      onClick={() => navigate('/home')} 
+      onClick={() => navigate(-1)} 
       size="24px"
     />
     <input

@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react'
-import { Button, Toast } from 'react-vant'
+import { Button, Cascader, Field, Picker, Toast } from 'react-vant'
 import styles from './BackgroundGenerator.module.css'
 
 interface BackgroundGeneratorProps {
@@ -14,7 +14,7 @@ const BackgroundGenerator: React.FC<BackgroundGeneratorProps> = ({
   prompt
 }) => {
   const uploadImageRef = useRef<HTMLInputElement>(null)
-  
+
   const [imgPreview, setImgPreview] = useState('https://dummyimage.com/412x915/ddd/999&text=上传图片')
   const [theme, setTheme] = useState('科技')
   const [mood, setMood] = useState('温馨')
@@ -27,7 +27,7 @@ const BackgroundGenerator: React.FC<BackgroundGeneratorProps> = ({
   const updateImageData = () => {
     const input = uploadImageRef.current
     if (!input?.files || input.files.length === 0) return
-    
+
     const file = input.files[0]
     const reader = new FileReader()
     reader.readAsDataURL(file)
@@ -38,7 +38,10 @@ const BackgroundGenerator: React.FC<BackgroundGeneratorProps> = ({
 
   const uploadUrl = 'https://api.coze.cn/v1/files/upload'
   const patToken = import.meta.env.VITE_PAT_TOKEN
-
+  const themeOptions = ['科技', '自然', '城市', '抽象', '简约'];
+  const moodOptions = ['温馨', '活力', '宁静', '梦幻', '专业'];
+  const styleOptions = ['写实', '插画', '水彩', '油画', '卡通'];
+  const colorOptions = ['蓝色', '紫色', '绿色', '橙色', '粉色'];
   const uploadFile = async () => {
     const formData = new FormData()
     const input = uploadImageRef.current
@@ -64,15 +67,15 @@ const BackgroundGenerator: React.FC<BackgroundGeneratorProps> = ({
   const generate = async () => {
     console.log('generate 函数开始执行')
     console.log('prompt 值:', prompt)
-    
+
     setLoading(true)
     setStatus("图片上传中...")
-    
+
     try {
       console.log('开始上传文件')
       const file_id = await uploadFile()
       console.log('上传文件结果:', file_id)
-      
+
       if (!file_id) {
         console.log('文件上传失败，退出')
         setStatus("图片上传失败")
@@ -81,7 +84,7 @@ const BackgroundGenerator: React.FC<BackgroundGeneratorProps> = ({
       }
 
       setStatus("图片上传成功，正在生成聊天背景...")
-      
+
       const parameters = {
         picture: JSON.stringify({ file_id }),
         theme: theme,
@@ -94,11 +97,11 @@ const BackgroundGenerator: React.FC<BackgroundGeneratorProps> = ({
 
       const workflowUrl = 'https://api.coze.cn/v1/workflow/run'
       const workflow_id = '7533134717945561123'
-      
+
       console.log('发送参数:', parameters)
       console.log('工作流URL:', workflowUrl)
       console.log('工作流ID:', workflow_id)
-      
+
       const res = await fetch(workflowUrl, {
         method: 'POST',
         headers: {
@@ -110,7 +113,7 @@ const BackgroundGenerator: React.FC<BackgroundGeneratorProps> = ({
 
       const ret = await res.json()
       console.log('工作流响应:', ret)
-      
+
       if (ret.code !== 0) {
         setStatus(`生成失败: ${ret.msg}`)
         return
@@ -120,10 +123,10 @@ const BackgroundGenerator: React.FC<BackgroundGeneratorProps> = ({
       const generatedUrl = data.data
       setImgUrl(generatedUrl)
       setStatus('')
-      
+
       Toast.success('背景生成成功！')
       onBackgroundGenerated(generatedUrl)
-      
+
     } catch (error) {
       console.error('生成错误:', error)
       Toast.fail('生成失败，请重试')
@@ -132,7 +135,6 @@ const BackgroundGenerator: React.FC<BackgroundGeneratorProps> = ({
       setLoading(false)
     }
   }
-
   return (
     <div className={styles.container}>
       <div className={styles.uploadSection}>
@@ -165,6 +167,7 @@ const BackgroundGenerator: React.FC<BackgroundGeneratorProps> = ({
               <option value="抽象">抽象</option>
               <option value="简约">简约</option>
             </select>
+
           </div>
 
           <div className={styles.settingGroup}>

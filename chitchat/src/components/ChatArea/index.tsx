@@ -5,8 +5,10 @@ import { chat } from '../../llm';
 import MarkdownRenderer from '../MarkdownRenderer';
 import { memo } from 'react';
 import LocalStorageUtil from '../../utils/LocalStorageUtil';
+import { useUserStore } from '../../store/useUserStore';
 
-const ChatArea = ({prompt, placeholder}) => {
+const ChatArea = ({prompt, placeholder, backgroundImage}) => {
+  const { user, isLogin } = useUserStore();
   const storageKey = `chat_messages_${prompt?.slice(0, 20) || 'default'}`;
   
   const [inputValue, setInputValue] = useState('');
@@ -15,70 +17,146 @@ const ChatArea = ({prompt, placeholder}) => {
     return saved || [{role:'system', content: prompt}];
   });
   const [loading, setLoading] = useState(false);
+  const [streamingContent, setStreamingContent] = useState('');
 
   // 保存消息到本地存储
   useEffect(() => {
     LocalStorageUtil.setItem(storageKey, messagesList);
   }, [messagesList, storageKey]);
 
-  const addMessage = (message: string, role: 'user' | 'assistant' | 'system') => {
+  const addMessage = async (message: string, role: 'user' | 'assistant' | 'system') => {
     setLoading(true);
-    chat([...messagesList, {role, content: message}]).then(res => { 
-      if(res.data) {
-        setMessagesList([...messagesList, {role, content: message}, {role: res.data.role, content: res.data.content}]);
-        setLoading(false);
+    
+    // 添加用户消息
+    const newMessages = [...messagesList, {role, content: message}];
+    setMessagesList(newMessages);
+    
+    // 添加空的助手消息用于流式更新
+    const assistantMessageIndex = newMessages.length;
+    setMessagesList(prev => [...prev, {role: 'assistant', content: ''}]);
+    setStreamingContent('');
+
+    try {
+      const endpoint = "https://api.deepseek.com/chat/completions";
+      const headers = {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${import.meta.env.VITE_DEEPSEEK_API_KEY}`,
+      };
+
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({
+          model: 'deepseek-chat',
+          messages: newMessages,
+          stream: true
+        })
+      });
+
+      // 流式输出处理
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let done = false;
+      let buffer = '';
+      let fullContent = '';
+
+      while(!done) {
+        const { value, done: readerDone } = await reader.read();
+        done = readerDone;
+        const text = buffer + decoder.decode(value);
+        buffer = '';
+
+        const lines = text.split('\n').filter(line => line.startsWith('data:'));
+        for (const line of lines) {
+          const incoming = line.slice(6);
+          if (incoming === '[DONE]') {
+            done = true;
+            break;
+          }
+          try {
+            const parsed = JSON.parse(incoming);
+            const content = parsed.choices[0].delta.content;
+            if (content) {
+              fullContent += content;
+              // 实时更新最后一条助手消息
+              setMessagesList(prev => {
+                const updated = [...prev];
+                updated[assistantMessageIndex] = {role: 'assistant', content: fullContent};
+                return updated;
+              });
+            }
+          } catch (e) {
+            console.error('Error parsing JSON:', e);
+            buffer = line;
+          }
+        }
       }
-    }) 
+    } catch (error) {
+      console.error('Stream error:', error);
+      // 错误处理：使用原有的非流式方式
+      const res = await chat(newMessages);
+      if(res.data) {
+        setMessagesList(prev => {
+          const updated = [...prev];
+          updated[assistantMessageIndex] = {role: res.data.role, content: res.data.content};
+          return updated;
+        });
+      }
+    } finally {
+      setLoading(false);
+    }
   }
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>)=>{
     e.preventDefault();
     if(inputValue.trim() === '') {
-      // Toast.fail('请输入内容');
       setInputValue('')
       return;
     }
     addMessage(inputValue, 'user');
     setInputValue('');
   }
+
   return(
     <div className={styles.chatArea}>
-    <div className={styles.messagesContainer}>
-      {messagesList.map((message, index) => (
-        <div key={index} className={`${styles.message} ${message.role === 'user' ? styles.user : styles.assistant}`}>
-          <div className={styles.avatar}>
-            {message.role === 'user' ? 'U' : 'AI'}
+      <div className={styles.messagesContainer}>
+        {messagesList.map((message, index) => (
+          <div key={index} className={`${styles.message} ${message.role === 'user' ? styles.user : styles.assistant}`}>
+            <div className={styles.avatar}>
+              {backgroundImage&&message.role !== 'user' ? (
+                <img src={backgroundImage} alt="Avatar" className={styles.avatarImage} />
+              ) : (
+                message.role === 'user' ? 'U' : 'AI'
+              )}
+            </div>
+            <div className={styles.messageContent}>
+              <MarkdownRenderer markdown={message.content}/>
+            </div>
           </div>
-          <div className={styles.messageContent}>
-            <MarkdownRenderer markdown={message.content}/>
-          </div>
-          
-        </div>
-      ))}
-     
+        ))}
+      </div>
+      
+      <div className={styles.inputContainer}>
+        <form onSubmit={handleSubmit}> 
+          <Input
+            className={styles.input}
+            placeholder={placeholder||"发消息给我吧"}
+            value={inputValue}
+            onChange={(value) => {setInputValue(value)}}
+            autoFocus = {true}
+            disabled={loading}
+          />
+          <Button 
+            className={styles.sendButton}
+            type="primary" 
+            size="small" 
+            nativeType="submit"
+          >
+            发送
+          </Button>
+        </form>
+      </div>
     </div>
-    
-    <div className={styles.inputContainer}>
-      <form onSubmit={handleSubmit}> 
-        <Input
-          className={styles.input}
-          placeholder={placeholder||"发消息给我吧"}
-          value={inputValue}
-          onChange={(value) => {setInputValue(value)}}
-          autoFocus = {true}
-          disabled={loading}
-          
-        />
-        <Button 
-          className={styles.sendButton}
-          type="primary" 
-          size="small" 
-          nativeType="submit"
-        >
-          发送
-        </Button>
-      </form>
-    </div>
-  </div>
   )
 }
 

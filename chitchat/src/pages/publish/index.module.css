@@ -21,7 +21,7 @@
 }
 
 .subtitle {
-  font-size: 14px;
+  font-size: 24px;
   opacity: 0.7;
   margin: 0;
   color: #8e8e93;
@@ -38,7 +38,7 @@
 .label {
   display: block;
   color: #ffffff;
-  font-size: 16px;
+  font-size: 28px;
   font-weight: 600;
   margin-bottom: 12px;
   display: flex;
@@ -60,7 +60,7 @@
 }
 
 .textarea {
-  border-radius: 12px;
+  border-radius: 24px;
   border: 1px solid #3a3a3c;
   background: #2c2c2e;
   color: #ffffff;
@@ -68,7 +68,7 @@
 }
 
 .tip {
-  font-size: 12px;
+  font-size: 25px;
   color: #8e8e93;
   margin-top: 6px;
   line-height: 1.4;
@@ -83,7 +83,7 @@
 }
 
 .previewTitle {
-  font-size: 16px;
+  font-size: 28px;
   font-weight: 600;
   color: #ffffff;
   margin: 0 0 16px 0;
@@ -118,14 +118,14 @@
 }
 
 .previewInfo h4 {
-  font-size: 16px;
+  font-size: 28px;
   font-weight: 600;
   color: #ffffff;
   margin: 0 0 4px 0;
 }
 
 .previewInfo p {
-  font-size: 14px;
+  font-size: 28px;
   color: #8e8e93;
   margin: 0;
   line-height: 1.4;
@@ -136,7 +136,7 @@
   border: none;
   border-radius: 12px;
   height: 50px;
-  font-size: 16px;
+  font-size: 25px;
   font-weight: 600;
   margin-top: 20px;
   color: #ffffff;
@@ -194,7 +194,7 @@
   color: #ffffff;
   font-weight: 600;
   padding: 10px 20px;
-  font-size: 14px;
+  font-size: 24px;
   transition: all 0.3s ease;
   cursor: pointer;
   min-width: 120px;

@@ -124,7 +124,7 @@ const Account = () => {
               {user?.username || '一包纸巾5美刀'}
             </h2>
             <p className={styles.userId}>
-              抖音号：{user?.id || '3037571835'}
+              账号：{user?.id || '3037571835'}
             </p>
           </div>
         </div>

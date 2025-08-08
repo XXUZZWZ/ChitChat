@@ -2,11 +2,14 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import useTitle from '../../hooks/useTitle'
 import useAiRoleListStore from '../../store/useAiRoleListStore'
 import styles from './index.module.css'
-import { Search, Swiper } from 'react-vant'
+import { Flex, Search, Swiper } from 'react-vant'
 import ChatArea from '../../components/ChatArea'
 import HomeSkeleton from '../../components/HomeSkeleton'
 import LocalStorageUtil from '../../utils/LocalStorageUtil'
 import { useEffect, useState, useRef, useLayoutEffect } from 'react'
+import { FloatingBall } from 'react-vant';
+import SvgSearch from '@react-vant/icons/es/Search'
+import { Chat } from '@react-vant/icons'
 const Home = () => {
   useTitle('首页')
   const navigate = useNavigate();
@@ -100,8 +103,49 @@ const Home = () => {
         transition: 'background-image 0.3s ease-in-out'
       }}
     >
+      <FloatingBall
+      offset={{top: '10px', right: '350px'}}
+      draggable={false}
+      className={styles.floatingBall}
+      adsorb = {false}
+      >
+        <svg 
+        t="1754533290060" 
+        class="icon" 
+        viewBox="0 0 1024 1024" 
+        version="1.1" 
+        xmlns="http://www.w3.org/2000/svg" 
+        p-id="10978" width="32" 
+        height="32"><path 
+        d="M514.048 62.464q93.184 0 175.616 35.328t143.872 96.768 96.768 143.872 35.328 175.616q0 94.208-35.328 176.128t-96.768 143.36-143.872 96.768-175.616 35.328q-94.208 0-176.64-35.328t-143.872-96.768-96.768-143.36-35.328-176.128q0-93.184 35.328-175.616t96.768-143.872 143.872-96.768 176.64-35.328zM772.096 576.512q26.624 0 45.056-18.944t18.432-45.568-18.432-45.056-45.056-18.432l-192.512 0 0-192.512q0-26.624-18.944-45.568t-45.568-18.944-45.056 18.944-18.432 45.568l0 192.512-192.512 0q-26.624 0-45.056 18.432t-18.432 45.056 18.432 45.568 45.056 18.944l192.512 0 0 191.488q0 26.624 18.432 45.568t45.056 18.944 45.568-18.944 18.944-45.568l0-191.488 192.512 0z" p-id="10979" fill="#e6e6e6"></path></svg>
+      </FloatingBall>
+
+      <FloatingBall 
+        className={styles.floatingBall}
+        style={{
+          '--rv-floating-box-size': '26px',
+        }}
+        adsorb = {false}
+        offset = {{
+          right: '40px',
+          top: '10px',
+        }}
+        draggable={false}
+        
+      >
+        <svg 
+         onClick={() => navigate('/search')}
+        t="1754531934121" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="6962" width="32px" height="32px"><path d="M920.32 841.813333l-172.373333-172.373333a365.781333 365.781333 0 0 0 71.253333-217.173333c0-202.24-164.693333-366.933333-366.933333-366.933334S85.333333 250.026667 85.333333 452.266667s164.693333 366.933333 366.933334 366.933333c81.066667 0 156.16-26.453333 217.173333-71.253333l172.373333 172.373333c10.666667 10.666667 25.173333 16.213333 39.253334 16.213333a55.381333 55.381333 0 0 0 39.253333-94.72zM175.786667 452.266667c0-152.746667 124.16-276.906667 276.906666-276.906667s276.906667 124.16 276.906667 276.906667-124.16 276.906667-276.906667 276.906666-276.906667-124.16-276.906666-276.906666z" fill="#e6e6e6" p-id="6963"></path></svg>
+      </FloatingBall>
+      <FloatingBall
+      offset={{top: '10px', right: '1px'}}
+      draggable={false}
+      className={styles.floatingBall}
+      adsorb = {false}
      
-      
+      >
+      <svg t="1754532781475" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8324" width="32" height="32"><path d="M186.0352 378.7776c-73.7536 0-133.76 60.0064-133.76 133.76s60.0064 133.76 133.76 133.76 133.76-60.0064 133.76-133.76S259.7888 378.7776 186.0352 378.7776zM268.8768 512.5376c0 45.696-37.1712 82.8672-82.8416 82.8672S103.168 558.208 103.168 512.5376s37.1712-82.8416 82.8672-82.8416S268.8768 466.8416 268.8768 512.5376zM509.7472 378.7776c-73.7536 0-133.76 60.0064-133.76 133.76s60.0064 133.76 133.76 133.76 133.76-60.0064 133.76-133.76S583.5008 378.7776 509.7472 378.7776zM592.5888 512.5376c0 45.696-37.1712 82.8672-82.8672 82.8672s-82.8416-37.1712-82.8416-82.8672 37.1712-82.8416 82.8416-82.8416S592.5888 466.8416 592.5888 512.5376zM839.04 378.7776c-73.7536 0-133.76 60.0064-133.76 133.76s60.0064 133.76 133.76 133.76c73.7536 0 133.76-60.0064 133.76-133.76S912.7936 378.7776 839.04 378.7776zM921.8816 512.5376c0 45.696-37.1712 82.8672-82.8416 82.8672s-82.8672-37.1712-82.8672-82.8672 37.1712-82.8416 82.8672-82.8416S921.8816 466.8416 921.8816 512.5376z" fill="#e6e6e6" p-id="8325"></path></svg>
+      </FloatingBall>
       {/* <Search placeholder="搜索你喜欢的角色" onClickInput={handleSearch} className={styles.search} /> */}
       
       <Swiper 

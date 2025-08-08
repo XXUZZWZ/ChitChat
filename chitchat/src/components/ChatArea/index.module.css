@@ -37,10 +37,11 @@
   justify-content: flex-start;
 
   .messageContent {
-    background: #4fc3f7;
+    background: rgba(79, 195, 247, 0.6);
     color: white;
     margin-right: 12px;
     border-radius: 18px 18px 4px 18px;
+    backdrop-filter: blur(8px);
   }
 }
 
@@ -49,11 +50,12 @@
   justify-content: flex-start;
 
   .messageContent {
-    background: #2c2c2e;
+    background: rgba(44, 44, 46, 0.75);
     color: white;
     margin-left: 12px;
     border-radius: 18px 18px 18px 4px;
-    border: 1px solid #3a3a3c;
+    border: 1px solid rgba(58, 58, 60, 0.6);
+    backdrop-filter: blur(10px);
   }
 }
 
@@ -72,6 +74,13 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
+.avatarImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
 .messageContent {
   max-width: 70%;
   padding: 24px 30px;
@@ -88,18 +97,19 @@
   left: 0;
   right: 0;
   padding: 24px 30px 30px;
-  background: rgba(28, 28, 30, 0.95);
-  backdrop-filter: blur(20px);
-  border-top: 1px solid #3a3a3c;
+  background: rgba(28, 28, 30, 0.8);
+  backdrop-filter: blur(15px);
+  border-top: 1px solid rgba(58, 58, 60, 0.4);
 
   form {
     display: flex;
     align-items: center;
     gap: 20px;
-    background: rgba(60, 60, 67, 0.8);
+    background: rgba(60, 60, 67, 0.6);
     border-radius: 35px;
     padding: 18px 30px;
-    border: 1px solid #4fc3f7;
+    border: 1px solid rgba(79, 195, 247, 0.7);
+    backdrop-filter: blur(12px);
   }
 }
 

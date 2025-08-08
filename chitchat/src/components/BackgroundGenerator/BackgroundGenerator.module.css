@@ -189,4 +189,9 @@
     width: 100vw;
     height: 915px;
   }
+
+  .settingGroup select {
+    display: block;
+    width: 480px;
+  }
 }
