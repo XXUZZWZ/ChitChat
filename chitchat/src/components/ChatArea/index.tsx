@@ -7,14 +7,14 @@ import { memo } from 'react';
 import LocalStorageUtil from '../../utils/LocalStorageUtil';
 import { useUserStore } from '../../store/useUserStore';
 
-const ChatArea = ({prompt, placeholder, backgroundImage}) => {
+const ChatArea = ({ prompt, placeholder, backgroundImage }) => {
   const { user, isLogin } = useUserStore();
   const storageKey = `chat_messages_${prompt?.slice(0, 20) || 'default'}`;
-  
+
   const [inputValue, setInputValue] = useState('');
   const [messagesList, setMessagesList] = useState<any>(() => {
     const saved = LocalStorageUtil.getItem<any[]>(storageKey);
-    return saved || [{role:'system', content: prompt}];
+    return saved || [{ role: 'system', content: prompt }];
   });
   const [loading, setLoading] = useState(false);
   const [streamingContent, setStreamingContent] = useState('');
@@ -26,14 +26,14 @@ const ChatArea = ({prompt, placeholder, backgroundImage}) => {
 
   const addMessage = async (message: string, role: 'user' | 'assistant' | 'system') => {
     setLoading(true);
-    
+
     // 添加用户消息
-    const newMessages = [...messagesList, {role, content: message}];
+    const newMessages = [...messagesList, { role, content: message }];
     setMessagesList(newMessages);
-    
+
     // 添加空的助手消息用于流式更新
     const assistantMessageIndex = newMessages.length;
-    setMessagesList(prev => [...prev, {role: 'assistant', content: ''}]);
+    setMessagesList(prev => [...prev, { role: 'assistant', content: '' }]);
     setStreamingContent('');
 
     try {
@@ -60,7 +60,7 @@ const ChatArea = ({prompt, placeholder, backgroundImage}) => {
       let buffer = '';
       let fullContent = '';
 
-      while(!done) {
+      while (!done) {
         const { value, done: readerDone } = await reader.read();
         done = readerDone;
         const text = buffer + decoder.decode(value);
@@ -81,7 +81,7 @@ const ChatArea = ({prompt, placeholder, backgroundImage}) => {
               // 实时更新最后一条助手消息
               setMessagesList(prev => {
                 const updated = [...prev];
-                updated[assistantMessageIndex] = {role: 'assistant', content: fullContent};
+                updated[assistantMessageIndex] = { role: 'assistant', content: fullContent };
                 return updated;
               });
             }
@@ -95,10 +95,10 @@ const ChatArea = ({prompt, placeholder, backgroundImage}) => {
       console.error('Stream error:', error);
       // 错误处理：使用原有的非流式方式
       const res = await chat(newMessages);
-      if(res.data) {
+      if (res.data) {
         setMessagesList(prev => {
           const updated = [...prev];
-          updated[assistantMessageIndex] = {role: res.data.role, content: res.data.content};
+          updated[assistantMessageIndex] = { role: res.data.role, content: res.data.content };
           return updated;
         });
       }
@@ -107,9 +107,9 @@ const ChatArea = ({prompt, placeholder, backgroundImage}) => {
     }
   }
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>)=>{
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if(inputValue.trim() === '') {
+    if (inputValue.trim() === '') {
       setInputValue('')
       return;
     }
@@ -117,39 +117,40 @@ const ChatArea = ({prompt, placeholder, backgroundImage}) => {
     setInputValue('');
   }
 
-  return(
+  return (
     <div className={styles.chatArea}>
       <div className={styles.messagesContainer}>
         {messagesList.map((message, index) => (
           <div key={index} className={`${styles.message} ${message.role === 'user' ? styles.user : styles.assistant}`}>
             <div className={styles.avatar}>
-              {backgroundImage&&message.role !== 'user' ? (
+              {backgroundImage && message.role !== 'user' ? (
                 <img src={backgroundImage} alt="Avatar" className={styles.avatarImage} />
               ) : (
                 message.role === 'user' ? 'U' : 'AI'
               )}
             </div>
             <div className={styles.messageContent}>
-              <MarkdownRenderer markdown={message.content}/>
+              <MarkdownRenderer markdown={message.content} />
             </div>
           </div>
         ))}
       </div>
-      
+
       <div className={styles.inputContainer}>
-        <form onSubmit={handleSubmit}> 
+        <form onSubmit={handleSubmit}>
           <Input
             className={styles.input}
-            placeholder={placeholder||"发消息给我吧"}
+            placeholder={placeholder || "发消息给我吧"}
             value={inputValue}
-            onChange={(value) => {setInputValue(value)}}
-            autoFocus = {true}
+            onChange={(value) => { setInputValue(value) }}
+            autoFocus={true}
             disabled={loading}
+
           />
-          <Button 
+          <Button
             className={styles.sendButton}
-            type="primary" 
-            size="small" 
+            type="primary"
+            size="small"
             nativeType="submit"
           >
             发送
