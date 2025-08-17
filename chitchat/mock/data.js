@@ -220,9 +220,9 @@ export default [
   },
   // 注册
   {
-     url: "/api/user/register",
-     method: "post",
-     response: (req) => { 
+    url: "/api/user/register",
+    method: "post",
+    response: (req) => {
       const { username, password } = req.body;
       if (username !== "admin" || password !== "123456") {
         return {
@@ -234,6 +234,88 @@ export default [
         code: 0,
         message: "注册成功",
       };
-     },
+    },
+  },
+  // 对话统计上报
+  {
+    url: "/api/analytics/conversation",
+    method: "post",
+    response: (req) => {
+      const data = req.body;
+      console.log("对话统计上报:", data);
+
+      // 模拟偶尔的网络错误
+      if (Math.random() < 0.1) {
+        return {
+          code: 1,
+          message: "网络错误，上报失败",
+        };
+      }
+
+      return {
+        code: 0,
+        message: "对话统计上报成功",
+        data: {
+          reportId: Mock.Random.id(),
+          timestamp: Date.now(),
+        },
+      };
+    },
+  },
+  // 页面离开统计上报
+  {
+    url: "/api/analytics/page-leave",
+    method: "post",
+    response: (req) => {
+      const data = req.body;
+      console.log("页面离开统计上报:", data);
+
+      // 模拟偶尔的网络错误
+      if (Math.random() < 0.1) {
+        return {
+          code: 1,
+          message: "网络错误，上报失败",
+        };
+      }
+
+      return {
+        code: 0,
+        message: "页面离开统计上报成功",
+        data: {
+          reportId: Mock.Random.id(),
+          timestamp: Date.now(),
+        },
+      };
+    },
+  },
+  // 批量埋点数据上报
+  {
+    url: "/api/analytics/batch",
+    method: "post",
+    response: (req) => {
+      const { conversations = [], pageLeaves = [] } = req.body;
+      console.log("批量埋点上报:", {
+        conversationCount: conversations.length,
+        pageLeaveCount: pageLeaves.length,
+      });
+
+      // 模拟偶尔的网络错误
+      if (Math.random() < 0.05) {
+        return {
+          code: 1,
+          message: "批量上报失败",
+        };
+      }
+
+      return {
+        code: 0,
+        message: "批量上报成功",
+        data: {
+          reportId: Mock.Random.id(),
+          processedCount: conversations.length + pageLeaves.length,
+          timestamp: Date.now(),
+        },
+      };
+    },
   },
 ];

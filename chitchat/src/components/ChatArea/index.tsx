@@ -1,11 +1,12 @@
 import styles from './index.module.css'
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Button, Input } from 'react-vant';
 import { chat } from '../../llm';
 import MarkdownRenderer from '../MarkdownRenderer';
 import { memo } from 'react';
 import LocalStorageUtil from '../../utils/LocalStorageUtil';
 import { useUserStore } from '../../store/useUserStore';
+import { useConversationAnalytics } from '../../hooks/useAnalytics';
 
 const ChatArea = ({ prompt, placeholder, backgroundImage }) => {
   const { user, isLogin } = useUserStore();
@@ -18,6 +19,16 @@ const ChatArea = ({ prompt, placeholder, backgroundImage }) => {
   });
   const [loading, setLoading] = useState(false);
   const [streamingContent, setStreamingContent] = useState('');
+
+  // 检查是否已有历史消息（除了system消息）
+  const hasUserMessages = messagesList.some((msg: any) => msg.role === 'user');
+
+  // 使用对话埋点Hook
+  const conversationAnalytics = useConversationAnalytics({
+    prompt,
+    autoStart: hasUserMessages, // 如果有历史消息，自动开始统计
+    autoEnd: true
+  });
 
   // 保存消息到本地存储
   useEffect(() => {
@@ -113,6 +124,15 @@ const ChatArea = ({ prompt, placeholder, backgroundImage }) => {
       setInputValue('')
       return;
     }
+    
+    // 开始对话统计（如果还没开始）
+    if (!conversationAnalytics.isActive) {
+      conversationAnalytics.startConversation();
+    }
+    
+    // 记录消息发送
+    conversationAnalytics.recordMessage();
+    
     addMessage(inputValue, 'user');
     setInputValue('');
   }
