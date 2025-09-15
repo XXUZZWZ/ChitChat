@@ -177,7 +177,7 @@ const Account = () => {
                     onClick={() => handleWorkClick(work)}
                   >
                     <div className={styles.workImage}>
-                      <img src={work.imageUrl} alt={work.title} />
+                      <img src={work.imageUrl} alt={work.title} loading="lazy" decoding="async" />
                     </div>
                     <div className={styles.workInfo}>
                       <h3 className={styles.workTitle}>{work.title}</h3>
