@@ -1,27 +1,31 @@
 import styles from './index.module.css'
-import { useState, useEffect, useRef } from 'react';
-import { Button, Input } from 'react-vant';
+import { useState, useEffect } from 'react';
 import { chat } from '../../llm';
 import MarkdownRenderer from '../MarkdownRenderer';
 import { memo } from 'react';
 import LocalStorageUtil from '../../utils/LocalStorageUtil';
-import { useUserStore } from '../../store/useUserStore';
-import { useConversationAnalytics } from '../../hooks/useAnalytics';
 
-const ChatArea = ({ prompt, placeholder, backgroundImage }) => {
-  const { user, isLogin } = useUserStore();
+
+interface ChatAreaProps {
+  prompt: string;
+  placeholder?: string;
+  backgroundImage?: string;
+}
+
+const ChatArea = ({ prompt, placeholder, backgroundImage }: ChatAreaProps) => {
   const storageKey = `chat_messages_${prompt?.slice(0, 20) || 'default'}`;
 
   const [inputValue, setInputValue] = useState('');
-  const [messagesList, setMessagesList] = useState<any>(() => {
-    const saved = LocalStorageUtil.getItem<any[]>(storageKey);
+  interface Message {
+    role: 'user' | 'assistant' | 'system';
+    content: string;
+  }
+
+  const [messagesList, setMessagesList] = useState<Message[]>(() => {
+    const saved = LocalStorageUtil.getItem<Message[]>(storageKey);
     return saved || [{ role: 'system', content: prompt }];
   });
   const [loading, setLoading] = useState(false);
-  const [streamingContent, setStreamingContent] = useState('');
-
-  // 检查是否已有历史消息（除了system消息）
-  const hasUserMessages = messagesList.some((msg: any) => msg.role === 'user');
 
   // 使用对话埋点Hook
   // const conversationAnalytics = useConversationAnalytics({
@@ -45,7 +49,6 @@ const ChatArea = ({ prompt, placeholder, backgroundImage }) => {
     // 添加空的助手消息用于流式更新
     const assistantMessageIndex = newMessages.length;
     setMessagesList(prev => [...prev, { role: 'assistant', content: '' }]);
-    setStreamingContent('');
 
     try {
       const endpoint = "https://api.deepseek.com/chat/completions";
@@ -65,7 +68,10 @@ const ChatArea = ({ prompt, placeholder, backgroundImage }) => {
       });
 
       // 流式输出处理
-      const reader = response.body.getReader();
+      const reader = response.body?.getReader();
+      if (!reader) {
+        throw new Error('无法获取响应流');
+      }
       const decoder = new TextDecoder();
       let done = false;
       let buffer = '';
@@ -90,7 +96,7 @@ const ChatArea = ({ prompt, placeholder, backgroundImage }) => {
             if (content) {
               fullContent += content;
               // 实时更新最后一条助手消息
-              setMessagesList(prev => {
+              setMessagesList((prev: Message[]) => {
                 const updated = [...prev];
                 updated[assistantMessageIndex] = { role: 'assistant', content: fullContent };
                 return updated;
@@ -106,10 +112,10 @@ const ChatArea = ({ prompt, placeholder, backgroundImage }) => {
       console.error('Stream error:', error);
       // 错误处理：使用原有的非流式方式
       const res = await chat(newMessages);
-      if (res.data) {
-        setMessagesList(prev => {
+      if (res?.data) {
+        setMessagesList((prev: Message[]) => {
           const updated = [...prev];
-          updated[assistantMessageIndex] = { role: res.data.role, content: res.data.content };
+          updated[assistantMessageIndex] = { role: res.data!.role, content: res.data!.content };
           return updated;
         });
       }
@@ -132,7 +138,7 @@ const ChatArea = ({ prompt, placeholder, backgroundImage }) => {
   return (
     <div className={styles.chatArea}>
       <div className={styles.messagesContainer}>
-        {messagesList.map((message, index) => (
+        {messagesList.map((message: Message, index: number) => (
           <div key={index} className={`${styles.message} ${message.role === 'user' ? styles.user : styles.assistant}`}>
             <div className={styles.avatar}>
               {backgroundImage && message.role !== 'user' ? (
@@ -149,24 +155,36 @@ const ChatArea = ({ prompt, placeholder, backgroundImage }) => {
       </div>
 
       <div className={styles.inputContainer}>
-        <form onSubmit={handleSubmit}>
-          <Input
-            className={styles.input}
+        <form onSubmit={handleSubmit} className={styles.inputForm}>
+          <textarea
+            className={styles.customInput}
             placeholder={placeholder || "发消息给我吧"}
             value={inputValue}
-            onChange={(value) => { setInputValue(value) }}
-            autoFocus={true}
+            onChange={(e) => { setInputValue(e.target.value) }}
             disabled={loading}
-
+            rows={1}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                if (inputValue.trim()) {
+                  const formEvent = new Event('submit', { bubbles: true, cancelable: true });
+                  e.currentTarget.form?.dispatchEvent(formEvent);
+                }
+              }
+            }}
+            onInput={(e) => {
+              const target = e.target as HTMLTextAreaElement;
+              target.style.height = 'auto';
+              target.style.height = Math.min(target.scrollHeight, 120) + 'px';
+            }}
           />
-          <Button
-            className={styles.sendButton}
-            type="primary"
-            size="small"
-            nativeType="submit"
+          <button
+            type="submit"
+            className={styles.customSendButton}
+            disabled={loading || !inputValue.trim()}
           >
-            发送
-          </Button>
+            {loading ? '...' : '发送'}
+          </button>
         </form>
       </div>
     </div>
