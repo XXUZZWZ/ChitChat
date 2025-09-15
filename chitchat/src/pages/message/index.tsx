@@ -79,7 +79,7 @@ const Message = () => {
           <div className={styles.emptyState}>
             <div className={styles.emptyIcon}>💬</div>
             <div>暂无聊天记录</div>
-            <div style={{ fontSize: '24px', marginTop: '10px', opacity: 0.6 }}>
+            <div>
               去首页开始聊天吧
             </div>
           </div>
