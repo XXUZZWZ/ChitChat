@@ -16,17 +16,11 @@ const Explore = () => {
   // 计算瀑布流布局
   const calculateWaterfallLayout = useCallback(() => {
     const newColumns: AiRoleItem[][] = [[], []]
-    const columnHeights = [0, 0]
 
-    aiRoleList.forEach((item) => {
-      // 随机高度模拟不同卡片高度
-      const randomHeight = Math.floor(Math.random() * 100) + 200
-      
-      // 找到高度最小的列
-      const minHeightIndex = columnHeights[0] <= columnHeights[1] ? 0 : 1
-      
-      newColumns[minHeightIndex].push(item)
-      columnHeights[minHeightIndex] += randomHeight
+    // 使用轮转分配，避免随机高度导致的列失衡
+    aiRoleList.forEach((item, index) => {
+      const colIndex = index % 2
+      newColumns[colIndex].push(item)
     })
 
     setColumns(newColumns)
@@ -96,7 +90,12 @@ const Explore = () => {
                 onClick={() => handleRoleClick(item)}
               >
                 <div className={styles.cardImage}>
-                  <img src={item.imageUrl} alt={getRoleName(item.prompt)} />
+                  <img
+                    src={item.imageUrl}
+                    alt={getRoleName(item.prompt)}
+                    loading="lazy"
+                    decoding="async"
+                  />
                   <div className={styles.cardOverlay}>
                     <div className={styles.cardTitle}>
                       {getRoleName(item.prompt)}
