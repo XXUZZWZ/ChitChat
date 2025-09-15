@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { doLogin, checkLogin } from "../api/user";
+import { doLogin, doRegister, checkLogin } from "../api/user";
 import ChatHistoryUtil from "../utils/ChatHistoryUtil";
 
 // 定义store的类型
@@ -7,6 +7,7 @@ interface UserStore {
   user: any;
   isLogin: boolean;
   Login: (credentials: { username?: string; password?: string }) => Promise<void>;
+  Register: (credentials: { username?: string; password?: string }) => Promise<void>;
   Logout: () => void;
   CheckLogin: () => Promise<void>;
   InitializeAuth: () => Promise<void>;
@@ -19,7 +20,7 @@ const checkInitialLoginStatus = async () => {
     try {
       const response = await checkLogin();
       // 假设成功响应包含用户信息，失败时会抛出错误
-      return !!response;
+      return !!response.data;
     } catch (error) {
       // token无效，清除它
       localStorage.removeItem('token');
@@ -36,9 +37,31 @@ export const useUserStore = create<UserStore>((set) => ({
   Login: async ({ username = "", password = "" }) => {
     const res = await doLogin({ username, password });
 
-    const { token, data: user } = res as { token: string; data: any }; // 直接从res解构，因为axios拦截器已经返回了res.data
+    // 现在axios返回完整响应，需要从res.data获取数据
+    const { token, data: user } = res.data as { token: string; data: any };
 
-    console.log("user", user, "token", token);
+    console.log("登录成功", user);
+    localStorage.setItem("token", token);
+    set({
+      user,
+      isLogin: true,
+    });
+  },
+  Register: async ({ username = "", password = "" }) => {
+    const res = await doRegister({ username, password });
+
+    // 现在axios返回完整响应，需要从res.data获取数据
+    const token = res?.data?.token;
+    const user = res?.data?.data;
+
+    if (!token) {
+      throw new Error('注册响应中缺少token');
+    }
+    if (!user) {
+      throw new Error('注册响应中缺少用户信息');
+    }
+
+    console.log("注册成功", user);
     localStorage.setItem("token", token);
     set({
       user,
@@ -58,7 +81,7 @@ export const useUserStore = create<UserStore>((set) => ({
       const response = await checkLogin();
       // 如果请求成功，说明token有效
       set({
-        isLogin: !!response,
+        isLogin: !!response.data,
       });
     } catch (error) {
       // token无效

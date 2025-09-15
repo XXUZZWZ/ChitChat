@@ -64,7 +64,7 @@ const Explore = () => {
   }
 
   // 提取角色名称
-  const getRoleName = (prompt: string) => {
+  const getRoleName = (prompt: string = "ai角色") => {
     const roleMatch = prompt.match(/我是(.{1,8}?)(?:[，,。]|$)/) || 
                      prompt.match(/作为(.{1,8}?)(?:[，,。]|$)/)
     

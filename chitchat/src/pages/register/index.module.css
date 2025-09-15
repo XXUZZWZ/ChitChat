@@ -5,7 +5,7 @@
   align-items: center;
   justify-content: center;
   padding: 20px;
-  /* 登录页面专用黑色字体样式 */
+  /* 注册页面专用黑色字体样式 */
   color: #000000;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
     "Helvetica Neue", Arial, sans-serif;
@@ -82,48 +82,32 @@
   color: #666666;
 }
 
-.loginBtn {
+.registerBtn {
   margin-top: 10px;
   height: 50px;
   border-radius: 12px;
   font-size: 16px;
   font-weight: 600;
-  --rv-button-primary-background-color: #4fc3f7;
-  --rv-button-primary-border-color: #4fc3f7;
+  --rv-button-primary-background-color: #34c759;
+  --rv-button-primary-border-color: #34c759;
   --rv-button-primary-color: #ffffff;
-  box-shadow: 0 4px 15px rgba(79, 195, 247, 0.3);
+  box-shadow: 0 4px 15px rgba(52, 199, 89, 0.3);
   transition: all 0.3s ease;
 }
 
-.loginBtn:hover {
-  --rv-button-primary-background-color: #3ba3d4;
-  box-shadow: 0 6px 20px rgba(79, 195, 247, 0.4);
+.registerBtn:hover {
+  --rv-button-primary-background-color: #28a745;
+  box-shadow: 0 6px 20px rgba(52, 199, 89, 0.4);
 }
 
-.loginBtn:active {
+.registerBtn:active {
   transform: translateY(1px);
-  box-shadow: 0 2px 8px rgba(79, 195, 247, 0.4);
+  box-shadow: 0 2px 8px rgba(52, 199, 89, 0.4);
 }
 
-.tips {
+.loginHint {
   text-align: center;
   padding: 20px;
-  background: rgba(79, 195, 247, 0.1);
-  border-radius: 12px;
-  border: 1px dashed rgba(79, 195, 247, 0.3);
-}
-
-.tips p {
-  margin: 5px 0;
-  font-size: 14px;
-  color: #4fc3f7;
-  font-weight: 500;
-}
-
-.registerHint {
-  text-align: center;
-  padding: 20px;
-  margin-top: 20px;
   background: rgba(52, 199, 89, 0.1);
   border-radius: 12px;
   border: 1px dashed rgba(52, 199, 89, 0.3);
@@ -133,13 +117,13 @@
   gap: 10px;
 }
 
-.registerHint p {
+.loginHint p {
   margin: 0;
   font-size: 14px;
   color: #8e8e93;
 }
 
-.registerLink {
+.loginLink {
   background: none;
   border: none;
   color: #34c759;
@@ -150,7 +134,7 @@
   transition: color 0.3s ease;
 }
 
-.registerLink:hover {
+.loginLink:hover {
   color: #28a745;
 }
 
@@ -236,7 +220,7 @@
   transform: translateY(0);
 }
 
-/* 登录页面专用全局黑色字体样式 - 只在此页面生效 */
+/* 注册页面专用全局黑色字体样式 - 只在此页面生效 */
 .container * {
   color: #000000 !important;
 }
@@ -250,11 +234,11 @@
   color: #8e8e93 !important;
 }
 
-.container .tips p {
-  color: #4fc3f7 !important;
+.container .loginHint p {
+  color: #8e8e93 !important;
 }
 
-.container .registerLink {
+.container .loginLink {
   color: #34c759 !important;
 }
 

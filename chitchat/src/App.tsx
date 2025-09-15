@@ -16,6 +16,7 @@ import { useUserStore } from './store/useUserStore'
 
 const Home = lazy(() => import('./pages/home'))
 const Login = lazy(() => import('./pages/login'))
+const Register = lazy(() => import('./pages/register'))
 const Account = lazy(() => import('./pages/account'))
 const Publish = lazy(() => import('./pages/publish'))
 const Explore = lazy(() => import('./pages/explore'))
@@ -45,6 +46,7 @@ function App() {
           </Route>
           <Route element={<PureLayout />} >
           <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
           <Route path="/search" element={<Search />} />
          
           </Route>

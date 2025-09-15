@@ -220,19 +220,60 @@ export default [
   },
   // 注册
   {
-    url: "/api/user/register",
+    url: "/api/register",
     method: "post",
     response: (req) => {
       const { username, password } = req.body;
-      if (username !== "admin" || password !== "123456") {
+
+      // 基本验证
+      if (!username || !password) {
         return {
           code: 1,
-          message: "用户名或密码错误",
+          message: "用户名和密码不能为空",
         };
       }
+
+      if (username.length < 3) {
+        return {
+          code: 1,
+          message: "用户名至少3个字符",
+        };
+      }
+
+      if (password.length < 6) {
+        return {
+          code: 1,
+          message: "密码至少6个字符",
+        };
+      }
+
+      // 模拟用户已存在的情况（如果用户名是admin）
+      if (username === "admin") {
+        return {
+          code: 1,
+          message: "用户名已存在",
+        };
+      }
+
+      // 注册成功，返回token和用户信息（与登录接口格式一致）
+      const token = sign(
+        {
+          user: {
+            id: Mock.Random.id(), // 生成随机ID
+            username: username,
+          },
+        },
+        secret,
+        { expiresIn: "86400" }
+      );
+
       return {
         code: 0,
-        message: "注册成功",
+        token,
+        data: {
+          id: Mock.Random.id(),
+          username: username,
+        },
       };
     },
   },

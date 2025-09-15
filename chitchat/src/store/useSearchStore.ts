@@ -13,14 +13,14 @@ const useSearchStore = create((set, get) => {
       const res = await getSuggestList(keyword);
       console.log(res);
       set({
-        suggestList: res.data,
+        suggestList: res.data.date, // mock返回格式: {code: 0, data: [...]}
       });
     },
     setHotList: async () => {
       const res = await getHotList();
       console.log(res);
       set({
-        hotList: res.data,
+        hotList: res.data.data, // mock返回格式: {code: 0, data: [...]}
       });
     },
   };
