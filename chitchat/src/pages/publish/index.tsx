@@ -102,7 +102,7 @@ const Publish = () => {
         navigate('/account')
       }, 1500)
       
-    } catch (error) {
+    } catch {
       Toast.fail('发布失败，请重试')
     } finally {
       setLoading(false)
@@ -114,6 +114,20 @@ const Publish = () => {
       <div className={styles.header}>
         <h1 className={styles.title}>创建AI角色</h1>
         <p className={styles.subtitle}>设计你的专属AI角色</p>
+      </div>
+
+      {/* 实时预览 */}
+      <div className={styles.preview}>
+        <div className={styles.previewTitle}>实时预览</div>
+        <div className={styles.previewCard}>
+          <div className={styles.previewImage}>
+            <img src={generateImageUrl(formData.title || 'AI Role')} alt="预览背景" />
+          </div>
+          <div className={styles.previewInfo}>
+            <h4>{formData.title || '未命名角色'}</h4>
+            <p>{formData.description || '你的角色描述将显示在这里。'}</p>
+          </div>
+        </div>
       </div>
 
       <div className={styles.form}>
@@ -137,7 +151,7 @@ const Publish = () => {
             type="textarea"
             rows={4}
             className={styles.textarea}
-            maxlength={200}
+            maxLength={200}
           />
           <div className={styles.tip}>
             描述角色的身份、性格、背景等，这将决定AI的回答风格
@@ -167,7 +181,7 @@ const Publish = () => {
             type="textarea"
             rows={3}
             className={styles.textarea}
-            maxlength={100}
+            maxLength={100}
           />
         </div>
 
