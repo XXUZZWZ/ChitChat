@@ -1,6 +1,7 @@
 import {
   Suspense,
-  lazy
+  lazy,
+  useEffect
 } from 'react'
 import {
   Routes,
@@ -11,6 +12,7 @@ import './App.css'
 import MainLayout from './layout/MainLayout'
 import PureLayout from './layout/PureLayout'
 import Loading from './components/Loading'
+import { useUserStore } from './store/useUserStore'
 
 const Home = lazy(() => import('./pages/home'))
 const Login = lazy(() => import('./pages/login'))
@@ -21,8 +23,12 @@ const Message = lazy(() => import('./pages/message'))
 const Search = lazy(() => import('./pages/search'))
 const RequireAuth = lazy(() => import('./components/RequireAuth'))
 function App() {
+  const { InitializeAuth } = useUserStore()
   
-  
+  // 应用启动时检查登录状态
+  useEffect(() => {
+    InitializeAuth()
+  }, [InitializeAuth])
 
   return (
    

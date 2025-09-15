@@ -13,13 +13,13 @@ export interface UseConversationAnalyticsOptions {
  * 自动处理对话开始/结束/消息统计
  */
 export const useConversationAnalytics = (options: UseConversationAnalyticsOptions = {}) => {
-  const { 
-    aiRoleId: providedAiRoleId, 
-    prompt, 
-    autoStart = false, 
-    autoEnd = true 
+  const {
+    aiRoleId: providedAiRoleId,
+    prompt,
+    autoStart = false,
+    autoEnd = true
   } = options;
-  
+
   const conversationIdRef = useRef<string | null>(null);
   const aiRoleIdRef = useRef<string>('');
   const [isActive, setIsActive] = useState(false);
@@ -47,7 +47,7 @@ export const useConversationAnalytics = (options: UseConversationAnalyticsOption
 
   useEffect(() => {
     aiRoleIdRef.current = generateAiRoleId(prompt);
-    
+
     // 设置当前AI角色
     analyticsManager.setCurrentAiRoleId(aiRoleIdRef.current);
 
@@ -91,7 +91,7 @@ export const useConversationAnalytics = (options: UseConversationAnalyticsOption
       // 如果还没开始对话，自动开始
       startConversation();
     }
-    
+
     if (conversationIdRef.current) {
       analyticsManager.recordMessage(conversationIdRef.current);
     }
@@ -105,7 +105,7 @@ export const useConversationAnalytics = (options: UseConversationAnalyticsOption
       conversationIdRef.current = null;
       setIsActive(false);
     }
-    
+
     // 设置新的AI角色
     aiRoleIdRef.current = newAiRoleId;
     analyticsManager.setCurrentAiRoleId(newAiRoleId);

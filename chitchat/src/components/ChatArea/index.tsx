@@ -24,11 +24,11 @@ const ChatArea = ({ prompt, placeholder, backgroundImage }) => {
   const hasUserMessages = messagesList.some((msg: any) => msg.role === 'user');
 
   // 使用对话埋点Hook
-  const conversationAnalytics = useConversationAnalytics({
-    prompt,
-    autoStart: hasUserMessages, // 如果有历史消息，自动开始统计
-    autoEnd: true
-  });
+  // const conversationAnalytics = useConversationAnalytics({
+  //   prompt,
+  //   autoStart: hasUserMessages, // 如果有历史消息，自动开始统计
+  //   autoEnd: true
+  // });
 
   // 保存消息到本地存储
   useEffect(() => {
@@ -124,14 +124,6 @@ const ChatArea = ({ prompt, placeholder, backgroundImage }) => {
       setInputValue('')
       return;
     }
-    
-    // 开始对话统计（如果还没开始）
-    if (!conversationAnalytics.isActive) {
-      conversationAnalytics.startConversation();
-    }
-    
-    // 记录消息发送
-    conversationAnalytics.recordMessage();
     
     addMessage(inputValue, 'user');
     setInputValue('');

@@ -34,9 +34,11 @@ export const reportPageLeave = (data: PageLeaveAnalytics) => {
 };
 
 // 批量上报埋点数据
-export const reportBatch = (data: { 
-  conversations?: ConversationAnalytics[], 
-  pageLeaves?: PageLeaveAnalytics[] 
+export const reportBatch = (data: {
+  conversations?: ConversationAnalytics[],
+  pageLeaves?: PageLeaveAnalytics[]
 }) => {
   return axios.post("/analytics/batch", data);
 };
+
+

@@ -1,4 +1,5 @@
-import { reportConversation, reportPageLeave, reportBatch, ConversationAnalytics, PageLeaveAnalytics } from '../api/analytics';
+import { reportConversation, reportPageLeave, reportBatch } from '../api/analytics';
+import type { ConversationAnalytics, PageLeaveAnalytics } from '../api/analytics';
 import LocalStorageUtil from './LocalStorageUtil';
 
 // 生成唯一会话ID
@@ -95,10 +96,10 @@ class AnalyticsManager {
       messageCount: 0,
       userId: this.userId
     };
-    
+
     this.conversationData.set(conversationId, conversationData);
     this.setCurrentAiRoleId(aiRoleId);
-    
+
     return conversationId;
   }
 

@@ -10,7 +10,7 @@ import { useEffect, useState, useRef, useLayoutEffect } from 'react'
 import { FloatingBall } from 'react-vant';
 import SvgSearch from '@react-vant/icons/es/Search'
 import { Chat } from '@react-vant/icons'
-import { usePageAnalytics, useConversationAnalytics } from '../../hooks/useAnalytics'
+// import { usePageAnalytics, useConversationAnalytics } from '../../hooks/useAnalytics'
 const Home = () => {
   useTitle('首页')
   const navigate = useNavigate();
@@ -22,16 +22,16 @@ const Home = () => {
   const swiperRef = useRef(null);
 
   // 使用页面埋点Hook
-  const pageAnalytics = usePageAnalytics({
-    pageUrl: '/home',
-    autoTrack: true
-  });
+  // const pageAnalytics = usePageAnalytics({
+  //   pageUrl: '/home',
+  //   autoTrack: true
+  // });
 
   // 使用对话埋点Hook（用于AI角色切换）
-  const conversationAnalytics = useConversationAnalytics({
-    autoStart: false,
-    autoEnd: false
-  });
+  // const conversationAnalytics = useConversationAnalytics({
+  //   autoStart: false,
+  //   autoEnd: false
+  // });
   
   // const handleSearch = () => {
   //   navigate('/search')
@@ -44,13 +44,13 @@ const Home = () => {
   }, [aiRoleList])
 
   // 监听当前AI角色变化，切换对话统计
-  useEffect(() => {
-    if (aiRoleList.length > 0 && aiRoleList[currentIndex]) {
-      const currentRole = aiRoleList[currentIndex];
-      // 切换到新的AI角色
-      conversationAnalytics.switchAiRole(currentRole.id);
-    }
-  }, [currentIndex, aiRoleList, conversationAnalytics]);
+  // useEffect(() => {
+  //   if (aiRoleList.length > 0 && aiRoleList[currentIndex]) {
+  //     const currentRole = aiRoleList[currentIndex];
+  //     // 切换到新的AI角色
+  //     conversationAnalytics.switchAiRole(currentRole.id);
+  //   }
+  // }, [currentIndex, aiRoleList, conversationAnalytics]);
 
   // 预加载图片
   useLayoutEffect(() => {
